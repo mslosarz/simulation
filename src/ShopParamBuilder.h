@@ -16,12 +16,9 @@ public:
 	ShopParamBuilder* withMeanResidenceTime(int iteration);
 	ShopParams* build();
 	~ShopParamBuilder();
-	static ShopParamBuilder* create(){
-		return new ShopParamBuilder();
-	}
-private:
 	ShopParamBuilder();
-	ShopParams* param;
+private:
+	ShopParams* params;
 };
 
 #endif /* SHOPPARAMBUILDER_H_ */

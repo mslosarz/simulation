@@ -5,28 +5,34 @@
  */
 
 #include "ClientParamBuilder.h"
+#include "ClientParams.h"
 
 ClientParamBuilder::ClientParamBuilder() {
 	params = new ClientParams();
 }
 
-ClientParamBuilder* ClientParamBuilder::withBalance(float balance){
+ClientParamBuilder* ClientParamBuilder::withBalance(float balance) {
+	params->setBalance(balance);
 	return this;
 }
 
-ClientParamBuilder* ClientParamBuilder::withDecisionProbability(float probability){
+ClientParamBuilder* ClientParamBuilder::withDecisionProbability(
+		float probability) {
+	params->setDecisionProbability(probability);
 	return this;
 }
 
-ClientParamBuilder* ClientParamBuilder::withDecisionPeriod(int period){
+ClientParamBuilder* ClientParamBuilder::withDecisionPeriod(int period) {
+	params->setDecisionPeriod(period);
 	return this;
 }
 
-ClientParams* ClientParamBuilder::build(){
+ClientParams* ClientParamBuilder::build() {
 	return params;
 }
 
 ClientParamBuilder::~ClientParamBuilder() {
 	delete params;
+	params = 0;
 }
 

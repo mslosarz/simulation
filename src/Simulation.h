@@ -4,19 +4,57 @@
  *  Created on: 7 gru 2013
  */
 
+#include "ShopParams.h"
+#include "ClientParams.h"
+#include "SimulationBuilder.h"
+
 #ifndef SIMULATION_H_
 #define SIMULATION_H_
-
-class SimulationBuilder;
 
 class Simulation {
 	friend SimulationBuilder;
 
 public:
-	virtual ~Simulation();
+	const ClientParams* getClient() {
+		return client;
+	}
+
+	void setClient(ClientParams* client) {
+		this->client = client;
+	}
+
+	int getClientNumber() const {
+		return clientNumber;
+	}
+
+	void setClientNumber(int clientNumber) {
+		this->clientNumber = clientNumber;
+	}
+
+	const ShopParams* getShop() const {
+		return shop;
+	}
+
+	static SimulationBuilder* create() {
+		return new SimulationBuilder();
+	}
+
+	virtual ~Simulation() {
+	}
+
+	void setShop(ShopParams* shop) {
+		this->shop = shop;
+	}
 
 private:
-	Simulation();
+	Simulation() :
+			shop(0), clientNumber(0), client(0) {
+	}
+
+	ShopParams* shop;
+	int clientNumber;
+	ClientParams* client;
+
 };
 
 #endif /* SIMULATION_H_ */

@@ -22,7 +22,7 @@ ShopParamBuilder* ShopParamBuilder::withPriceDistribution(
 }
 
 ShopParamBuilder* ShopParamBuilder::withMeanResidenceTime(int iteration) {
-	params->setIteration(iteration);
+	params->setMeanResidenceTime(iteration);
 	return this;
 }
 

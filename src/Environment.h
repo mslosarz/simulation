@@ -5,23 +5,27 @@
  */
 
 #include "Simulation.h"
+#include "SimulationResult.h"
 
 #ifndef ENVIRONMENT_H_
 #define ENVIRONMENT_H_
 
 class Environment {
 public:
-	void getResults() {
+	SimulationResult* getResults() {
+		return 0;
 	}
 
 	void performSimulation() {
 	}
 
-	Environment(Simulation* params) {
+	Environment(Simulation* simulation): simulation(simulation) {
 	}
 
 	Environment();
 	virtual ~Environment();
+private:
+	Simulation* simulation;
 };
 
 #endif /* ENVIRONMENT_H_ */

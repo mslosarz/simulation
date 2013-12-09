@@ -13,7 +13,7 @@ class ShopParams {
 	friend ShopParamBuilder;
 
 public:
-	virtual ~ShopParams() {
+	virtual ~ShopParams(){
 
 	}
 
@@ -21,7 +21,7 @@ public:
 		return new ShopParamBuilder();
 	}
 
-	float getFromDistribution() {
+	float getPriceFromDistribution(){
 		return distribution();
 	}
 
@@ -29,12 +29,12 @@ public:
 		this->distribution = distribution;
 	}
 
-	int getIteration() const {
-		return iteration;
+	int getMeanResidenceTime() const {
+		return meanResidenceTime;
 	}
 
-	void setIteration(int iteration) {
-		this->iteration = iteration;
+	void setMeanResidenceTime(int meanResidenceTime) {
+		this->meanResidenceTime = meanResidenceTime;
 	}
 
 	int getProductNumber() const {
@@ -47,11 +47,11 @@ public:
 
 private:
 	ShopParams() :
-			productNumber(0), distribution(0), iteration(0) {
+			productNumber(0), distribution(0), meanResidenceTime(0) {
 	}
 	int productNumber;
 	float (*distribution)();
-	int iteration;
+	int meanResidenceTime;
 
 };
 

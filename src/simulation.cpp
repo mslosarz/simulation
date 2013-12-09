@@ -8,17 +8,18 @@
 #include "ClientParams.h"
 #include "ShopParams.h"
 #include "Simulation.h"
+#include "Environment.h"
 
 using namespace std;
 
 /*
  Temat 1. Symulacja sklepu
  Zadanie polega na zaimplemenotwaniu modelu umożliwiającego symulację pracy sklepu.
+
  Celem symulacji jest wyznaczenie parametrów dla których sklep będzie przynosił największe zyski.
  Parametrami sklepu są:
  • średni czas przebywania klienta na zakupach
- • ilość produktów
- • ilość produktów promowanych
+ • liczba produktów
  */
 
 float distribution() {
@@ -43,5 +44,15 @@ int main() {
 	->withShop(shopParams) //
 	->build();
 
+	Environment* env = new Environment(simulation);
+
+	env->performSimulation();
+
+	SimulationResult* results = env->getResults();
+
+	delete env;
+	delete clientParams;
+	delete shopParams;
+	delete simulation;
 	return 0;
 }

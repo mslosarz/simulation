@@ -6,12 +6,18 @@
 
 #include "Shop.h"
 
-Shop::Shop() {
-	// TODO Auto-generated constructor stub
-
+Shop::Shop(ShopParams* param) :
+		meanResidenceTime(param->getMeanResidenceTime()) {
+	int productNumber = param->getProductNumber();
+	for (int i = 0; i < productNumber; i++) {
+		products.push_back(new Product(param->getPriceFromDistribution()));
+	}
 }
 
 Shop::~Shop() {
-	// TODO Auto-generated destructor stub
+	for (unsigned int i = 0; i < products.size(); i++) {
+		delete products[i];
+		products[i] = 0;
+	}
 }
 

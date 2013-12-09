@@ -4,30 +4,33 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/Client.cpp \
 ../src/ClientParamBuilder.cpp \
-../src/Customer.cpp \
 ../src/Environment.cpp \
 ../src/Shop.cpp \
 ../src/ShopParamBuilder.cpp \
 ../src/SimulationBuilder.cpp \
+../src/SimulationResult.cpp \
 ../src/simulation.cpp 
 
 OBJS += \
+./src/Client.o \
 ./src/ClientParamBuilder.o \
-./src/Customer.o \
 ./src/Environment.o \
 ./src/Shop.o \
 ./src/ShopParamBuilder.o \
 ./src/SimulationBuilder.o \
+./src/SimulationResult.o \
 ./src/simulation.o 
 
 CPP_DEPS += \
+./src/Client.d \
 ./src/ClientParamBuilder.d \
-./src/Customer.d \
 ./src/Environment.d \
 ./src/Shop.d \
 ./src/ShopParamBuilder.d \
 ./src/SimulationBuilder.d \
+./src/SimulationResult.d \
 ./src/simulation.d 
 
 

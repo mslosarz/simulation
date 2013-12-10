@@ -6,12 +6,19 @@
 
 #include "Environment.h"
 
-Environment::Environment() {
-	// TODO Auto-generated constructor stub
-
+Environment::Environment(Simulation* simulation) {
+	shop = new Shop(simulation->getShop());
+	int clientNumber = simulation->getClientNumber();
+	for (int i = 0; i < clientNumber; i++) {
+		clients.push_back(new Client());
+	}
 }
 
 Environment::~Environment() {
-	// TODO Auto-generated destructor stub
+	delete shop;
+	for (unsigned int i = 0; i < clients.size(); i++) {
+		delete clients[i];
+		clients[i] = 0;
+	}
 }
 

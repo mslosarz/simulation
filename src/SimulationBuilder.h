@@ -17,6 +17,7 @@ public:
 	SimulationBuilder();
 	SimulationBuilder* withClients(int number, ClientParams* params);
 	SimulationBuilder* withShop(ShopParams* params);
+	SimulationBuilder* withTime(int time);
 	Simulation* build();
 	~SimulationBuilder();
 private:

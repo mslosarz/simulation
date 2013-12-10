@@ -10,7 +10,7 @@
 class Product {
 public:
 	Product(float price) :
-			price(price), sold(false) {
+			price(price) {
 	}
 
 	float getPrice() const {
@@ -18,19 +18,7 @@ public:
 	}
 
 	float getIncome() const {
-		if (sold) {
-			return price * 0.1f;
-		} else {
-			return 0.0f;
-		}
-	}
-
-	bool isSold() {
-		return sold;
-	}
-
-	void buy(){
-		sold = true;
+		return price * 0.1f;
 	}
 
 	virtual ~Product() {
@@ -38,7 +26,6 @@ public:
 
 private:
 	float price;
-	bool sold;
 };
 
 #endif /* PRODUCT_H_ */

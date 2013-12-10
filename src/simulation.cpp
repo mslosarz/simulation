@@ -42,6 +42,7 @@ int main() {
 	Simulation* simulation = Simulation::create() //
 	->withClients(100, clientParams) //
 	->withShop(shopParams) //
+	->withTime(1000)//
 	->build();
 
 	Environment* env = new Environment(simulation);

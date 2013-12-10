@@ -15,7 +15,7 @@ class Simulation {
 	friend SimulationBuilder;
 
 public:
-	const ClientParams* getClient() {
+	ClientParams* getClient() {
 		return client;
 	}
 
@@ -31,7 +31,15 @@ public:
 		this->clientNumber = clientNumber;
 	}
 
-	const ShopParams* getShop() const {
+	int getTime(){
+		return time;
+	}
+
+	void setTime(int time){
+		this->time = time;
+	}
+
+	ShopParams* getShop() {
 		return shop;
 	}
 
@@ -48,12 +56,13 @@ public:
 
 private:
 	Simulation() :
-			shop(0), clientNumber(0), client(0) {
+			shop(0), clientNumber(0), client(0), time(0) {
 	}
 
 	ShopParams* shop;
 	int clientNumber;
 	ClientParams* client;
+	int time;
 
 };
 

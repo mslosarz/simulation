@@ -23,6 +23,11 @@ SimulationBuilder* SimulationBuilder::withShop(ShopParams* params) {
 	return this;
 }
 
+SimulationBuilder* SimulationBuilder::withTime(int time) {
+	simulation->setTime(time);
+	return this;
+}
+
 Simulation* SimulationBuilder::build() {
 	return simulation;
 }

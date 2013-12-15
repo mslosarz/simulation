@@ -6,12 +6,47 @@
 
 #include "Environment.h"
 
-Environment::Environment(Simulation* simulation) {
-	shop = new Shop(simulation->getShop());
+void Environment::createShop(ShopParams* shopParams) {
+	shopParams->setClock(clock);
+	shop = new Shop(shopParams);
+}
+
+void Environment::createClients(Simulation* simulation) {
 	int clientNumber = simulation->getClientNumber();
+	ClientParams* param = simulation->getClient();
+	param->setClock(clock);
 	for (int i = 0; i < clientNumber; i++) {
-		clients.push_back(new Client());
+		Client* client = new Client(param);
+		clients.push_back(client);
 	}
+}
+
+Environment::Environment(Simulation* simulation) :
+		simulationPeriod(simulation->getTime()), clock(new Clock()) {
+	createShop(simulation->getShop());
+	createClients(simulation);
+}
+
+void Environment::performSimulation() {
+	for (; clock->getTime() < simulationPeriod; clock->incTime()) {
+		putSomeClientIntoShop();
+		shop->tryToSellSomething();
+	}
+}
+
+void Environment::putSomeClientIntoShop() {
+	// rozkład gamma?
+	int clientsInShop = shop->clientsInShop();
+	if (clientsInShop < (int) clients.size()) {
+		for (int i = 0; i < 23; i++) {
+			clients[clientsInShop]->enterToShop(shop);
+		}
+	}
+
+}
+
+SimulationResult* Environment::getResults() {
+	return 0;
 }
 
 Environment::~Environment() {
@@ -20,5 +55,6 @@ Environment::~Environment() {
 		delete clients[i];
 		clients[i] = 0;
 	}
+	delete clock;
 }
 

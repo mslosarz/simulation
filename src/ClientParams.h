@@ -4,16 +4,17 @@
  *  Created on: 7 gru 2013
  */
 
+#include "Params.h"
 #include "ClientParamBuilder.h"
 
 #ifndef CLIENTPARAMS_H_
 #define CLIENTPARAMS_H_
 
-class ClientParams {
+class ClientParams : public Params {
 	friend ClientParamBuilder;
 public:
-	float getBalance() const {
-		return balance;
+	float getBalanceFromDistribution() {
+		return balanceDistribution();
 	}
 
 	int getDecisionPeriod() const {
@@ -24,8 +25,8 @@ public:
 		return decisionProbability;
 	}
 
-	void setBalance(float balance) {
-		this->balance = balance;
+	void setBalanceDistribution(float (*balanceDistribution)()) {
+		this->balanceDistribution = balanceDistribution;
 	}
 
 	void setDecisionPeriod(int decisionPeriod) {
@@ -44,10 +45,10 @@ public:
 	}
 
 private:
-	ClientParams() :
-			balance(.0f), decisionProbability(.0f), decisionPeriod(0) {
+	ClientParams() : decisionProbability(.0f), decisionPeriod(0) {
+		balanceDistribution = 0;
 	}
-	float balance;
+	float (*balanceDistribution)();
 	float decisionProbability;
 	int decisionPeriod;
 };

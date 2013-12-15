@@ -7,6 +7,7 @@ CPP_SRCS += \
 ../src/Client.cpp \
 ../src/ClientParamBuilder.cpp \
 ../src/Environment.cpp \
+../src/Params.cpp \
 ../src/Shop.cpp \
 ../src/ShopParamBuilder.cpp \
 ../src/SimulationBuilder.cpp \
@@ -17,6 +18,7 @@ OBJS += \
 ./src/Client.o \
 ./src/ClientParamBuilder.o \
 ./src/Environment.o \
+./src/Params.o \
 ./src/Shop.o \
 ./src/ShopParamBuilder.o \
 ./src/SimulationBuilder.o \
@@ -27,6 +29,7 @@ CPP_DEPS += \
 ./src/Client.d \
 ./src/ClientParamBuilder.d \
 ./src/Environment.d \
+./src/Params.d \
 ./src/Shop.d \
 ./src/ShopParamBuilder.d \
 ./src/SimulationBuilder.d \

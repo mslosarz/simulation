@@ -22,32 +22,41 @@ using namespace std;
  • liczba produktów
  */
 
-float distribution() {
+float shopPriceDistribution() {
 	return 0;
+}
+
+float clientBalanceDistribution(){
+	return 1000;
 }
 
 int main() {
 	ClientParams* clientParams = ClientParams::create() //
-	->withBalance(10) //
-	->withDecisionPeriod(2) //
+	->withBalanceDistribution(clientBalanceDistribution) //
+	->withDecisionPeriod(4) //
 	->withDecisionProbability(0.3) //
 	->build(); //
+	cout << "Stworzono parametry klienta" << endl;
 
 	ShopParams* shopParams = ShopParams::create() //
-	->withMeanResidenceTime(20) //
+	->withMeanResidenceTime(30) //
 	->withProducts(10000) //
-	->withPriceDistribution(distribution) //
+	->withPriceDistribution(shopPriceDistribution) //
 	->build();
+	cout << "Stworzono parametry sklepu" << endl;
 
 	Simulation* simulation = Simulation::create() //
 	->withClients(100, clientParams) //
 	->withShop(shopParams) //
-	->withTime(1000)//
+	->withTime(100)//
 	->build();
+	cout << "Stworzono parametry symulacji" << endl;
 
 	Environment* env = new Environment(simulation);
+	cout << "Stworzono środowisko" << endl;
 
 	env->performSimulation();
+	cout << "Wykonano symulacje" << endl;
 
 	SimulationResult* results = env->getResults();
 

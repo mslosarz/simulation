@@ -5,6 +5,7 @@
  */
 
 #include "Shop.h"
+#include "Client.h"
 
 Shop::Shop(ShopParams* param) :
 		meanResidenceTime(param->getMeanResidenceTime()) {
@@ -14,8 +15,37 @@ Shop::Shop(ShopParams* param) :
 	}
 }
 
-void Shop::sellProduct(Client* client){
+Product* Shop::getProduct(){
+	int size = available.size();
+	if (size > 0) {
+		return available[size - 1];
+	}
+	return 0;
+}
 
+void Shop::sellProduct(Client* client){
+	if(Product* product = getProduct()){
+		if(client->buy(product)){
+			available.pop_back();
+			sold.push_back(product);
+		} else {
+			available.push_back(product);
+		}
+	}
+}
+
+void Shop::addClient(Client* client){
+	clients.push_back(client);
+}
+
+void Shop::tryToSellSomething(){
+	for(unsigned int i = 0; i < clients.size(); i++){
+		sellProduct(clients[i]);
+	}
+}
+
+int Shop::clientsInShop(){
+	return clients.size();
 }
 
 Shop::~Shop() {

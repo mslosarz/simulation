@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Shop.h"
+#include "Clock.h"
 #include "Client.h"
 #include "Simulation.h"
 #include "SimulationResult.h"
@@ -18,19 +19,22 @@ using namespace std;
 
 class Environment {
 public:
-	SimulationResult* getResults() {
-		return 0;
-	}
+	SimulationResult* getResults();
 
-	void performSimulation() {
-	}
+	void performSimulation();
 
 	Environment(Simulation* simulation);
 
 	virtual ~Environment();
 private:
+	void createShop(ShopParams* shopParams);
+	void createClients(Simulation* simulation);
+	void putSomeClientIntoShop();
+
 	Shop* shop;
 	vector<Client*> clients;
+	int simulationPeriod;
+	Clock* clock;
 
 };
 

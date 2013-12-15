@@ -13,7 +13,7 @@ class ClientParamBuilder {
 public:
 	ClientParamBuilder();
 	~ClientParamBuilder();
-	ClientParamBuilder* withBalance(float balance);
+	ClientParamBuilder* withBalanceDistribution(float (*balanceDistribution)());
 	ClientParamBuilder* withDecisionProbability(float probability);
 	ClientParamBuilder* withDecisionPeriod(int decisionPeriod);
 	ClientParams* build();

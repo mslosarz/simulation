@@ -4,19 +4,19 @@
  *  Created on: 7 gru 2013
  */
 
+#include "Params.h"
 #include "ShopParamBuilder.h"
 
 #ifndef SHOPPARAMS_H_
 #define SHOPPARAMS_H_
 
-class ShopParams {
+class ShopParams : public Params {
 	friend ShopParamBuilder;
 
 public:
 	virtual ~ShopParams(){
 
 	}
-
 	static ShopParamBuilder* create() {
 		return new ShopParamBuilder();
 	}

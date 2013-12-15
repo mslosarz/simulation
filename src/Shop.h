@@ -5,7 +5,6 @@
  */
 
 #include <vector>
-#include "Client.h"
 #include "Product.h"
 #include "ShopParams.h"
 
@@ -14,17 +13,25 @@
 
 using namespace std;
 
+class Client;
+
 class Shop {
 public:
 	Shop(ShopParams* param);
 
-	void sellProduct(Client* client);
+	void addClient(Client* client);
+	void tryToSellSomething();
+	int clientsInShop();
 
 	virtual ~Shop();
 
 private:
+	void sellProduct(Client* client);
+	Product* getProduct();
+
 	vector<Product*> available;
 	vector<Product*> sold;
+	vector<Client*> clients;
 	int meanResidenceTime;
 };
 

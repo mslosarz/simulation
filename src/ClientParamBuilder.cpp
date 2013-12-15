@@ -11,13 +11,12 @@ ClientParamBuilder::ClientParamBuilder() {
 	params = new ClientParams();
 }
 
-ClientParamBuilder* ClientParamBuilder::withBalance(float balance) {
-	params->setBalance(balance);
+ClientParamBuilder* ClientParamBuilder::withBalanceDistribution(float (*balanceDistribution)()){
+	params->setBalanceDistribution(balanceDistribution);
 	return this;
 }
 
-ClientParamBuilder* ClientParamBuilder::withDecisionProbability(
-		float probability) {
+ClientParamBuilder* ClientParamBuilder::withDecisionProbability(float probability) {
 	params->setDecisionProbability(probability);
 	return this;
 }

@@ -15,18 +15,23 @@
 class Client {
 public:
 	Client(ClientParams* param);
-	void enterToShop(Shop* shop);
-	bool buy(Product* product);
+	void enterTo(Shop* shop);
+	bool buy();
+	int getDecisionPeriod();
+	bool hasFinishedShopping();
+	float getBalance() const;
+	void subBalance(float value);
 	virtual ~Client();
 
 private:
-	bool hasEnoughMoneyFor(Product* product);
 
 	float balance;
 	int decisionPeriod;
 	float decisionProbability;
 	MTRand* generator;
-	int timeInShop;
+	bool finishedShopping;
+
+	Shop* shop;
 };
 
 #endif /* CLIENT_H_ */

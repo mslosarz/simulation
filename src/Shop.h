@@ -20,18 +20,17 @@ public:
 	Shop(ShopParams* param);
 
 	void addClient(Client* client);
-	void tryToSellSomething();
-	int clientsInShop();
+	Product* hasCheaperThan(float price);
+	void sell(Product* product, Client* client);
+	int getMeanResidenceTime();
+	float calculateIncome();
+	float calculateProductsPrice();
 
 	virtual ~Shop();
 
 private:
-	void sellProduct(Client* client);
-	Product* getProduct();
-
 	vector<Product*> available;
 	vector<Product*> sold;
-	vector<Client*> clients;
 	int meanResidenceTime;
 };
 

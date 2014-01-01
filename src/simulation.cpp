@@ -5,6 +5,7 @@
 //============================================================================
 
 #include <iostream>
+#include "MersenneTwister.h"
 #include "ClientParams.h"
 #include "ShopParams.h"
 #include "Simulation.h"
@@ -22,43 +23,49 @@ using namespace std;
  • liczba produktów
  */
 
+MTRand mtRand;
+
 float shopPriceDistribution() {
-	return 0;
+	return 10 + abs(mtRand.randPoisson(12));
 }
 
-float clientBalanceDistribution(){
-	return 1000;
+float clientBalanceDistribution() {
+	return mtRand.randNorm(200, 50);
 }
 
 int main() {
 	ClientParams* clientParams = ClientParams::create() //
 	->withBalanceDistribution(clientBalanceDistribution) //
 	->withDecisionPeriod(4) //
-	->withDecisionProbability(0.3) //
+	->withDecisionProbability(0.1) //
 	->build(); //
-	cout << "Stworzono parametry klienta" << endl;
 
 	ShopParams* shopParams = ShopParams::create() //
-	->withMeanResidenceTime(30) //
-	->withProducts(10000) //
+	->withMeanResidenceTime(50) //
+	->withProducts(2000) //
 	->withPriceDistribution(shopPriceDistribution) //
 	->build();
-	cout << "Stworzono parametry sklepu" << endl;
 
 	Simulation* simulation = Simulation::create() //
-	->withClients(100, clientParams) //
+	->withClients(1000, clientParams) //
 	->withShop(shopParams) //
-	->withTime(100)//
+	->withTime(100000)//
 	->build();
-	cout << "Stworzono parametry symulacji" << endl;
 
 	Environment* env = new Environment(simulation);
-	cout << "Stworzono środowisko" << endl;
+	cout << "Environment created" << endl;
 
 	env->performSimulation();
-	cout << "Wykonano symulacje" << endl;
+	cout << "Simulation performed" << endl;
 
 	SimulationResult* results = env->getResults();
+	cout << endl <<
+			"begin clients balance: " << results->getBeginClientsBalance() << endl <<
+			"final clients balance: " << results->getFinalClientsBalance() << endl <<
+			"begin product price: " << results->getBeginPriceOfProducts() << endl <<
+			"left product price: " << results->getLeftPriceOfProducts() << endl <<
+			"shop income: " << results->getShopIncome() << endl <<
+			"---------------------------------------" << endl;
 
 	delete env;
 	delete clientParams;

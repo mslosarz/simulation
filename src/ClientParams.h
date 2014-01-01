@@ -4,13 +4,12 @@
  *  Created on: 7 gru 2013
  */
 
-#include "Params.h"
 #include "ClientParamBuilder.h"
 
 #ifndef CLIENTPARAMS_H_
 #define CLIENTPARAMS_H_
 
-class ClientParams : public Params {
+class ClientParams {
 	friend ClientParamBuilder;
 public:
 	float getBalanceFromDistribution() {

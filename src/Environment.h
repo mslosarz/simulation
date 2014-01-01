@@ -5,8 +5,8 @@
  */
 #include <vector>
 
+#include "Event.h"
 #include "Shop.h"
-#include "Clock.h"
 #include "Client.h"
 #include "Simulation.h"
 #include "SimulationResult.h"
@@ -19,23 +19,26 @@ using namespace std;
 
 class Environment {
 public:
+	Environment(Simulation* simulation);
+
 	SimulationResult* getResults();
 
-	void performSimulation();
-
-	Environment(Simulation* simulation);
+	SimulationResult* performSimulation();
 
 	virtual ~Environment();
 private:
-	void createShop(ShopParams* shopParams);
-	void createClients(Simulation* simulation);
-	void putSomeClientIntoShop();
+	void fillTimeLine();
+	void fillResults();
+
+	vector<Event*> timeLine;
+	int simulationPeriod;
+	Simulation* simulation;
+	SimulationResult* result;
+	MTRand rand;
 
 	Shop* shop;
 	vector<Client*> clients;
-	int simulationPeriod;
-	Clock* clock;
-
+	Event* start;
 };
 
 #endif /* ENVIRONMENT_H_ */

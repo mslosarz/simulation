@@ -8,8 +8,8 @@
 
 #include <iostream>
 
-StartEvent::StartEvent(vector<Event*>* events) : Event(events) {
-
+StartEvent::StartEvent(vector<Event*>* events) : Event(events, 0) {
+	this->events->pop_back();
 }
 
 void StartEvent::execute(){

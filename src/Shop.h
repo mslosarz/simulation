@@ -7,6 +7,7 @@
 #include <vector>
 #include "Product.h"
 #include "ShopParams.h"
+#include "MersenneTwister.h"
 
 #ifndef SHOP_H_
 #define SHOP_H_
@@ -20,8 +21,8 @@ public:
 	Shop(ShopParams* param);
 
 	void addClient(Client* client);
-	Product* hasCheaperThan(float price);
-	void sell(Product* product, Client* client);
+	int hasCheaperThan(float price);
+	void sell(int product, Client* client);
 	int getMeanResidenceTime();
 	float calculateIncome();
 	float calculateProductsPrice();
@@ -29,9 +30,11 @@ public:
 	virtual ~Shop();
 
 private:
-	vector<Product*> available;
-	vector<Product*> sold;
+	int productNumber;
 	int meanResidenceTime;
+	float *prices;
+	bool *sold;
+	MTRand rand;
 };
 
 #endif /* SHOP_H_ */

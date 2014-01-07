@@ -11,22 +11,26 @@ Client::Client(ClientParams* param) :
 		balance(param->getBalanceFromDistribution()), //
 		decisionPeriod(param->getDecisionPeriod()),//
 		decisionProbability(param->getDecisionProbability()), //
-		generator(new MTRand()), //
-		finishedShopping(false),
+		finishedShopping(false),//
 		shop(0) {
+
 }
 
 bool Client::buy() {
-	if(Product* product = shop->hasCheaperThan(balance)){
-		bool clientDecidedForPurchase = generator->rand() < decisionProbability;
-		if(clientDecidedForPurchase){
-			shop->sell(product, this);
+	if(generator.rand() < decisionProbability){
+		int index = shop->hasCheaperThan(balance);
+		if(index >= 0){
+			shop->sell(index, this);
 			return true;
+		} else {
+			finishedShopping = true;
 		}
-	} else {
-		finishedShopping = true;
 	}
 	return false;
+}
+
+bool Client::hasFinishedShopping() const {
+	return finishedShopping;
 }
 
 void Client::subBalance(float value){
@@ -41,15 +45,10 @@ int Client::getDecisionPeriod(){
 	return decisionPeriod;
 }
 
-bool Client::hasFinishedShopping(){
-	return finishedShopping;
-}
-
 void Client::enterTo(Shop* shop){
 	this->shop = shop;
 }
 
 Client::~Client() {
-	delete generator;
 }
 

@@ -21,7 +21,7 @@ ClientParamBuilder* ClientParamBuilder::withDecisionProbability(float probabilit
 	return this;
 }
 
-ClientParamBuilder* ClientParamBuilder::withDecisionPeriod(int period) {
+ClientParamBuilder* ClientParamBuilder::withDecisionPeriod(int (*period)()) {
 	params->setDecisionPeriod(period);
 	return this;
 }

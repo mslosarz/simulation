@@ -15,7 +15,7 @@ public:
 	~ClientParamBuilder();
 	ClientParamBuilder* withBalanceDistribution(float (*balanceDistribution)());
 	ClientParamBuilder* withDecisionProbability(float probability);
-	ClientParamBuilder* withDecisionPeriod(int decisionPeriod);
+	ClientParamBuilder* withDecisionPeriod(int (*decisionPeriod)());
 	ClientParams* build();
 private:
 	ClientParams* params;

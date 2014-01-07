@@ -18,7 +18,7 @@ public:
 	void enterTo(Shop* shop);
 	bool buy();
 	int getDecisionPeriod();
-	bool hasFinishedShopping();
+	bool hasFinishedShopping() const;
 	float getBalance() const;
 	void subBalance(float value);
 	virtual ~Client();
@@ -28,9 +28,8 @@ private:
 	float balance;
 	int decisionPeriod;
 	float decisionProbability;
-	MTRand* generator;
 	bool finishedShopping;
-
+	MTRand generator;
 	Shop* shop;
 };
 

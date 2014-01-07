@@ -10,29 +10,9 @@
 class SimulationResult {
 public:
 	SimulationResult() :
-			beginClientsBalance(0), finalClientsBalance(0), shopIncome(0), leftPriceOfProducts(0) {
+			shopIncome(0), leftPriceOfProducts(0) {
 	}
 	virtual ~SimulationResult() {
-	}
-
-	float getBeginClientsBalance() const {
-		return beginClientsBalance;
-	}
-
-	void addBeginClientsBalance(float clientBalance) {
-		this->beginClientsBalance += clientBalance;
-	}
-
-	float getFinalClientsBalance() const {
-		return finalClientsBalance;
-	}
-
-	void setFinalClientsBanalce(float balance){
-		this->finalClientsBalance = balance;
-	}
-
-	void addFinalClientsBalance(float clientBalance) {
-		this->finalClientsBalance += clientBalance;
 	}
 
 	float getLeftPriceOfProducts() const {
@@ -41,14 +21,6 @@ public:
 
 	void setLeftPriceOfProducts(float productPrice) {
 		this->leftPriceOfProducts = productPrice;
-	}
-
-	float getBeginPriceOfProducts() const {
-		return beginPriceOfProducts;
-	}
-
-	void setBeginPriceOfProducts(float beginPriceOfProducts) {
-		this->beginPriceOfProducts = beginPriceOfProducts;
 	}
 
 	float getShopIncome() const {
@@ -60,10 +32,7 @@ public:
 	}
 
 private:
-	float beginClientsBalance;
-	float finalClientsBalance;
 	float shopIncome;
-	float beginPriceOfProducts;
 	float leftPriceOfProducts;
 };
 

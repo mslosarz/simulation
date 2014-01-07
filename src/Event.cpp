@@ -8,21 +8,22 @@
 
 #include <iostream>
 
-atomic<int> Event::currId = {1};
-
-Event::Event(vector<Event*>* events) : Event(events, currId) {
+Event::Event(vector<Event*>* events) : Event(events, 1) {
 }
 
-Event::Event(vector<Event*>* events, int time): id(currId++){
+Event::Event(vector<Event*>* events, int time): id(time){
 	this->time = time;
 	this->creationTime = time;
 	this->events = events;
 	this->events->push_back(this);
-//	cout << endl << "Event Created! (id = " << id << ") at " << creationTime << endl << endl;
 }
 
 Event::Event(Event* trigger, int timeAfterTrigger) : Event(trigger->getEvents(), trigger->getTime()){
-	this->time = trigger->getTime() + timeAfterTrigger;
+	if(timeAfterTrigger > 0){
+		this->time = trigger->getTime() + timeAfterTrigger;
+	} else {
+		this->time = trigger->getTime() + 1;
+	}
 }
 
 Event::~Event(){

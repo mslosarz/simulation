@@ -30,7 +30,7 @@ private:
 	void fillTimeLine();
 	void fillResults();
 
-	vector<Event*> timeLine;
+	vector<Event*> lifetime;
 	int simulationPeriod;
 	Simulation* simulation;
 	SimulationResult* result;

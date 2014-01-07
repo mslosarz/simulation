@@ -17,7 +17,7 @@ public:
 	}
 
 	int getDecisionPeriod() const {
-		return decisionPeriod;
+		return decisionPeriod();
 	}
 
 	float getDecisionProbability() const {
@@ -28,7 +28,7 @@ public:
 		this->balanceDistribution = balanceDistribution;
 	}
 
-	void setDecisionPeriod(int decisionPeriod) {
+	void setDecisionPeriod(int (*decisionPeriod)()) {
 		this->decisionPeriod = decisionPeriod;
 	}
 
@@ -44,12 +44,13 @@ public:
 	}
 
 private:
-	ClientParams() : decisionProbability(.0f), decisionPeriod(0) {
+	ClientParams() : decisionProbability(.0f) {
 		balanceDistribution = 0;
+		decisionPeriod = 0;
 	}
 	float (*balanceDistribution)();
 	float decisionProbability;
-	int decisionPeriod;
+	int (*decisionPeriod)();
 };
 
 #endif /* CLIENTPARAMS_H_ */

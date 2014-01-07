@@ -16,40 +16,32 @@ bool sortEvents(Event* e1, Event* e2) {
 	return e1->getTime() < e2->getTime();
 }
 
-Environment::Environment(Simulation* simulation) :
-		simulationPeriod(simulation->getTime()), simulation(simulation) {
-	shop = new Shop(simulation->getShop());
-	start = new StartEvent(&timeLine);
-	result = new SimulationResult();
-	fillTimeLine();
-	result->setBeginPriceOfProducts(shop->calculateProductsPrice());
-}
 
-void Environment::fillTimeLine() {
-	// dodanie klientów z rozkładem poissona
-	int time = 1;
-	for (int clientEnterd = 0; clientEnterd < simulation->getClientNumber();) {
-		int toEnter = rand.randPoisson(18);
-		for (int i = 0; i < toEnter && clientEnterd + i < simulation->getClientNumber(); i++) {
-			Client* client = new Client(simulation->getClient());
-			result->addBeginClientsBalance(client->getBalance());
-			clients.push_back(client);
-			new ClientEnterEvent(start, time, client, shop);
-			clientEnterd++;
-		}
-		time++;
-	}
-	new FinishEvent(&timeLine, simulationPeriod);
+Environment::Environment(Simulation* simulation) :
+		simulationPeriod(simulation->getTime()), simulation(simulation), result(new SimulationResult()) {
+	shop = new Shop(simulation->getShop());
+	start = new StartEvent(&lifetime);
 }
 
 SimulationResult* Environment::performSimulation() {
-	while (timeLine.size() > 0) {
-		sort(timeLine.begin(), timeLine.end(), sortEvents);
-		Event* event = *timeLine.begin();
-		timeLine.erase(timeLine.begin());
-//		cout << "---> " << "(id=" << event->getId() << "): " << event->getTime() << endl;
-		event->execute();
-		delete event;
+	for (int i = 0; i < simulationPeriod; i++) {
+		int clientToEnter = abs(rand.randPoisson(1));
+		bool atFive = i % 5 == 0;
+		bool notToMutch = int(clients.size()) <= simulation->getClientNumber();
+		if(clientToEnter > 0 && atFive && notToMutch){
+			for (int newClient = 0; newClient < clientToEnter; newClient++) {
+				Client* client = new Client(simulation->getClient());
+				clients.push_back(client);
+				new ClientEnterEvent(start, i, client, shop);
+			}
+		}
+		if (lifetime.size() > 0) {
+			sort(lifetime.begin(), lifetime.end(), sortEvents);
+			Event* event = *lifetime.begin();
+			lifetime.erase(lifetime.begin());
+			event->execute();
+			delete event;
+		}
 	}
 	fillResults();
 	return result;
@@ -59,10 +51,7 @@ SimulationResult* Environment::getResults() {
 	return result;
 }
 
-void Environment::fillResults(){
-	for(unsigned int i = 0; i < clients.size(); i++){
-		result->addFinalClientsBalance(clients[i]->getBalance());
-	}
+void Environment::fillResults() {
 	result->setShopIncome(shop->calculateIncome());
 	result->setLeftPriceOfProducts(shop->calculateProductsPrice());
 }
@@ -70,9 +59,14 @@ void Environment::fillResults(){
 Environment::~Environment() {
 	delete result;
 	delete shop;
+	delete start;
 	for (unsigned int i = 0; i < clients.size(); i++) {
 		delete clients[i];
 		clients[i] = 0;
+	}
+	for(unsigned int i = 0; i < lifetime.size(); i++){
+		delete lifetime[i];
+		lifetime[i] = 0;
 	}
 }
 

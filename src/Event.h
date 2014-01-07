@@ -4,7 +4,6 @@
  *  Created on: 18 gru 2013
  */
 
-#include <atomic>
 #include <vector>
 
 #ifndef EVENT_H_
@@ -28,7 +27,6 @@ protected:
 	vector<Event*>* events;
 
 private:
-	static atomic<int> currId;
 	int time;
 	int creationTime;
 	int id;

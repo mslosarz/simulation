@@ -9,69 +9,61 @@
 #include "Shop.h"
 #include "Client.h"
 
-bool sortProducts(Product* p1, Product* p2){
-	return p1->getPrice() < p2->getPrice();
-}
-
 Shop::Shop(ShopParams* param) :
-		meanResidenceTime(param->getMeanResidenceTime()) {
-	int productNumber = param->getProductNumber();
+		productNumber(param->getProductNumber()), meanResidenceTime(param->getMeanResidenceTime()) {
+	prices = new float[productNumber];
+	sold = new bool[productNumber];
 	for (int i = 0; i < productNumber; i++) {
-		available.push_back(new Product(param->getPriceFromDistribution()));
+		prices[i] = param->getPriceFromDistribution();
+		sold[i] = false;
 	}
-	sort(available.begin(), available.end(), sortProducts);
+	sort(prices, prices + productNumber);
 }
 
-Product* Shop::hasCheaperThan(float price){
-	Product* p = new Product(price);
-	vector<Product*>::iterator lower = lower_bound(available.begin(), available.end(), p, sortProducts);
-	delete p;
-	int lowerBoundIndex = lower - available.begin();
-	if(lowerBoundIndex){
-		return available[lowerBoundIndex - 1];
+int Shop::hasCheaperThan(float price) {
+	for (int i = productNumber - 1; i >= 0; i--) {
+		if (!sold[i] && prices[i] < price) {
+			int product = int(rand.rand() * i);
+			while (product >= 0 && sold[product]) {
+				product--;
+			};
+			return product;
+		}
 	}
-	return 0;
+	return -1;
 }
 
-int Shop::getMeanResidenceTime(){
+int Shop::getMeanResidenceTime() {
 	return meanResidenceTime;
 }
 
-
-float Shop::calculateIncome(){
-	float income = 0;
-	for(unsigned int i = 0; i < sold.size(); i++){
-		income += sold[i]->getIncome();
-	}
-	return income;
+void Shop::sell(int product, Client* client) {
+	sold[product] = true;
+	client->subBalance(prices[product]);
 }
 
-float Shop::calculateProductsPrice(){
-	float leftProductPrice = 0;
-	for(unsigned int i = 0; i < available.size(); i++){
-		leftProductPrice += available[i]->getPrice();
+float Shop::calculateIncome() {
+	float result = 0;
+	for (int i = 0; i < productNumber; i++) {
+		if (sold[i]) {
+			result += prices[i];
+		}
 	}
-	return leftProductPrice;
+	return result;
 }
 
-void Shop::sell(Product* product, Client* client){
-	vector<Product*>::iterator position = find(available.begin(), available.end(), product);
-	if (position != available.end()){
-		available.erase(position);
+float Shop::calculateProductsPrice() {
+	float result = 0;
+	for (int i = 0; i < productNumber; i++) {
+		result += prices[i];
 	}
-	sold.push_back(*position);
-	client->subBalance((*position)->getPrice());
+	return result;
 }
 
 Shop::~Shop() {
-	for (unsigned int i = 0; i < available.size(); i++) {
-		delete available[i];
-		available[i] = 0;
-	}
-
-	for (unsigned int i = 0; i < sold.size(); i++) {
-			delete sold[i];
-			sold[i] = 0;
-		}
+	delete [] prices;
+	prices = 0;
+	delete [] sold;
+	sold = 0;
 }
 

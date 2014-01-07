@@ -13,63 +13,88 @@
 
 using namespace std;
 
-/*
- Temat 1. Symulacja sklepu
- Zadanie polega na zaimplemenotwaniu modelu umożliwiającego symulację pracy sklepu.
-
- Celem symulacji jest wyznaczenie parametrów dla których sklep będzie przynosił największe zyski.
- Parametrami sklepu są:
- • średni czas przebywania klienta na zakupach
- • liczba produktów
- */
-
 MTRand mtRand;
 
+
+float product(){
+	float val = abs(mtRand.randNorm(4.8, 5));
+	if(val < 0.2){
+		return product();
+	}
+	return val;
+}
+
+float balance(){
+	float bal = abs(mtRand.randNorm(40, 20));
+	if(bal < 2){
+		return balance();
+	}
+	return bal;
+}
+
 float shopPriceDistribution() {
-	return 10 + abs(mtRand.randPoisson(12));
+	return product();
 }
 
 float clientBalanceDistribution() {
-	return mtRand.randNorm(200, 50);
+	return balance();
+}
+
+int decision(){
+	double i = abs(mtRand.randNorm(4, 2));
+	if(i < 1){
+		return 1;
+	}
+	return int(i);
 }
 
 int main() {
-	ClientParams* clientParams = ClientParams::create() //
-	->withBalanceDistribution(clientBalanceDistribution) //
-	->withDecisionPeriod(4) //
-	->withDecisionProbability(0.1) //
-	->build(); //
+	cout << "mrt;prod;lpp;si;" << endl;
+	for(int meanResidenceTime = 0; meanResidenceTime < 30; meanResidenceTime++){
 
-	ShopParams* shopParams = ShopParams::create() //
-	->withMeanResidenceTime(50) //
-	->withProducts(2000) //
-	->withPriceDistribution(shopPriceDistribution) //
-	->build();
+		for(int products = 100; products < 5000; products+=100){
+			ClientParamBuilder* clientParamsBuilder = ClientParams::create();
+			ClientParams* clientParams = clientParamsBuilder //
+			->withBalanceDistribution(clientBalanceDistribution) //
+			->withDecisionPeriod(decision) //
+			->withDecisionProbability(0.1) //
+			->build(); //
+			ShopParamBuilder* shopParamBuilder = ShopParams::create();
+			ShopParams* shopParams = shopParamBuilder //
+			->withMeanResidenceTime(meanResidenceTime) //
+			->withProducts(products) //
+			->withPriceDistribution(shopPriceDistribution) //
+			->build();
+			SimulationBuilder* simulationBuilder = Simulation::create();
+			Simulation* simulation = simulationBuilder //
+			->withClients(100, clientParams) //
+			->withShop(shopParams) //
+			->withTime(480)//
+			->build();
 
-	Simulation* simulation = Simulation::create() //
-	->withClients(1000, clientParams) //
-	->withShop(shopParams) //
-	->withTime(100000)//
-	->build();
+			Environment* env = new Environment(simulation);
+//			cout << "Environment created" << endl;
 
-	Environment* env = new Environment(simulation);
-	cout << "Environment created" << endl;
+			env->performSimulation();
+//			cout << "Simulation performed" << endl;
 
-	env->performSimulation();
-	cout << "Simulation performed" << endl;
 
-	SimulationResult* results = env->getResults();
-	cout << endl <<
-			"begin clients balance: " << results->getBeginClientsBalance() << endl <<
-			"final clients balance: " << results->getFinalClientsBalance() << endl <<
-			"begin product price: " << results->getBeginPriceOfProducts() << endl <<
-			"left product price: " << results->getLeftPriceOfProducts() << endl <<
-			"shop income: " << results->getShopIncome() << endl <<
-			"---------------------------------------" << endl;
+			SimulationResult* results = env->getResults();
+			cout << meanResidenceTime << ";"
+				 << products << ";"
+				 << results->getLeftPriceOfProducts() << ";"
+				 << results->getShopIncome() << ";" << endl;
+//			cout << endl <<
+//					"left product price: " << results->getLeftPriceOfProducts() << endl <<
+//					"shop income: " << results->getShopIncome() << endl <<
+//					/*"---------------------------------------"*/ "" << endl;
 
-	delete env;
-	delete clientParams;
-	delete shopParams;
-	delete simulation;
+			delete env;
+			delete clientParamsBuilder;
+			delete shopParamBuilder;
+			delete simulationBuilder;
+		}
+
+	}
 	return 0;
 }

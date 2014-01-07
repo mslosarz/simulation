@@ -13,7 +13,6 @@ FinishEvent::FinishEvent(vector<Event*>* events, int time) :
 }
 
 void FinishEvent::execute() {
-	cout << "-----Finish-----" << endl;
 	while(events->size() > 0) {
 		Event* event = *events->begin();
 		events->erase(events->begin());

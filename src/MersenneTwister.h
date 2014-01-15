@@ -225,8 +225,7 @@ inline void MTRand::seed(uint32 * const bigSeed, const uint32 seedLength) {
 	register uint32 j = 0;
 	register int k = (N > seedLength ? N : seedLength);
 	for (; k; --k) {
-		state[i] = state[i]
-				^ ((state[i - 1] ^ (state[i - 1] >> 30)) * 1664525UL);
+		state[i] = state[i] ^ ((state[i - 1] ^ (state[i - 1] >> 30)) * 1664525UL);
 		state[i] += (bigSeed[j] & 0xffffffffUL) + j;
 		state[i] &= 0xffffffffUL;
 		++i;
@@ -239,8 +238,7 @@ inline void MTRand::seed(uint32 * const bigSeed, const uint32 seedLength) {
 			j = 0;
 	}
 	for (k = N - 1; k; --k) {
-		state[i] = state[i]
-				^ ((state[i - 1] ^ (state[i - 1] >> 30)) * 1566083941UL);
+		state[i] = state[i] ^ ((state[i - 1] ^ (state[i - 1] >> 30)) * 1566083941UL);
 		state[i] -= i;
 		state[i] &= 0xffffffffUL;
 		++i;
@@ -431,19 +429,17 @@ inline MTRand& MTRand::operator=(const MTRand& o) {
 
 inline double MTRand::randPoisson(const double mean) {
 	int n;
-	if (mean <= 0){
+	if (mean <= 0) {
 		return 0;
 	}
-	if (mean < 25) {
-		double expmean = exp(-mean);
-		double pir = 1;
-		n = -1;
-		while (0xdeadbeef) {
-			n++;
-			pir *= this->rand();
-			if (pir <= expmean)
-				break;
-		}
+	double expmean = exp(-mean);
+	double pir = 1;
+	n = -1;
+	while (0xdeadbeef) {
+		n++;
+		pir *= this->rand();
+		if (pir <= expmean)
+			break;
 	}
 	return double(n);
 }

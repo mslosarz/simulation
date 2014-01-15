@@ -16,7 +16,6 @@ bool sortEvents(Event* e1, Event* e2) {
 	return e1->getTime() < e2->getTime();
 }
 
-
 Environment::Environment(Simulation* simulation) :
 		simulationPeriod(simulation->getTime()), simulation(simulation), result(new SimulationResult()) {
 	shop = new Shop(simulation->getShop());
@@ -24,17 +23,18 @@ Environment::Environment(Simulation* simulation) :
 }
 
 SimulationResult* Environment::performSimulation() {
-	for (int i = 0; i < simulationPeriod; i++) {
-		int clientToEnter = abs(rand.randPoisson(1));
-		bool atFive = i % 5 == 0;
-		bool notToMutch = int(clients.size()) <= simulation->getClientNumber();
-		if(clientToEnter > 0 && atFive && notToMutch){
-			for (int newClient = 0; newClient < clientToEnter; newClient++) {
-				Client* client = new Client(simulation->getClient());
-				clients.push_back(client);
-				new ClientEnterEvent(start, i, client, shop);
-			}
+	int time = 1;
+	for (int i = 0; i < simulation->getClientNumber();) {
+		int clientToEnter = rand.randPoisson(1);
+		for (int newClient = 0; newClient < clientToEnter; newClient++) {
+			Client* client = new Client(simulation->getClient());
+			clients.push_back(client);
+			new ClientEnterEvent(start, time, client, shop);
 		}
+		i+=clientToEnter;
+		time+=5;
+	}
+	for (int i = 0; i < simulationPeriod; i++) {
 		if (lifetime.size() > 0) {
 			sort(lifetime.begin(), lifetime.end(), sortEvents);
 			Event* event = *lifetime.begin();
@@ -64,7 +64,7 @@ Environment::~Environment() {
 		delete clients[i];
 		clients[i] = 0;
 	}
-	for(unsigned int i = 0; i < lifetime.size(); i++){
+	for (unsigned int i = 0; i < lifetime.size(); i++) {
 		delete lifetime[i];
 		lifetime[i] = 0;
 	}
